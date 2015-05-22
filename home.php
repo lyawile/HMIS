@@ -1,25 +1,14 @@
 <!DOCTYPE html>
 <?php
-
-    if( !empty($_POST['username']) ){
+    if(isset($_POST['product'])  && $_POST['cost'] != 0){
         require_once './database.php';
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $query = "SELECT * FROM users WHERE username ='$username'  AND password = '$password'";
-        $result = mysqli_query($link, $query);
-        if(mysqli_num_rows($result) === 1){
-            while(@$result = mysqli_fetch_array($result)){
-            session_start();
-            $_SESSION['logged'] = $result['firstname']; 
-            echo $_SESSION['logged'];
-            }
-            header('location: home.php');
-        }
-        else           {
-            header('location: index.php');
-        }
+        $product = $_POST['product'];
+        $cost = $_POST['cost'];
+        $description = $_POST['description'];
+        $date = $_POST['date'];
+        $query = "INSERT INTO `items` (`itemID`, `name`, `cost`, `date`, `description`) VALUES (NULL, '$product', '$cost', '$date', '$description')";
+        mysqli_query($link, $query);
     }
-  
    
 ?>
 <html>
@@ -37,13 +26,13 @@
                 </h2>
             </div>
             <div class="main-menu">
-<!--           <ul>
+                <ul>
                     <li><a href=""> Reports </a></li>
                     <li><a href=""> Commands </a></li>
                     <li><a href=""> Account</a></li>
-                    <li><a href=""> Sign Out</a></li>
+                    <li><a href="signout.php"> Sign Out</a></li>
                     
-                </ul>-->
+                </ul>
 
 <!--                <a href="">
                     <span><img src="./images/menu.png"/>MENU</span>
@@ -53,30 +42,33 @@
 
             </div>-->
             <div class="content">
-                <?php 
-//                    if(isset($loginSuccess)){
-//                        echo $loginSuccess;
-//                    }
-//                   if(isset($loginFailed)){
-//                       echo $loginFailed;
-//                   }
-                ?>
                 <form method="POST" action="">
                     <p class="desc">
-                      Username 
+                       Item name 
                     </p>
                     <p>
-                        <input type="text"  name="username" />
+                        <input type="text"  name="product" required />
                     </p>
                     <p class="desc">
-                        Password
+                        Cost
                     </p>
                     <p>
-                        <input type="password"  name="password" />
+                        <input type="text"  name="cost" required/>
                     </p>
-                    
+                    <p class="desc">
+                        Description
+                    </p>
                     <p>
-                        <input style="font-size: 100%;" type="submit"  id ="submit" value="Login"/>
+                        <input type="text"  name="description" />
+                    </p>
+                    <p class="desc">
+                        Date
+                    </p>
+                    <p>
+                        <input type="date"  name="date" required/>
+                    </p>
+                    <p>
+                        <input type="submit"  id ="submit" />
                     </p>
                     
                 </form>
